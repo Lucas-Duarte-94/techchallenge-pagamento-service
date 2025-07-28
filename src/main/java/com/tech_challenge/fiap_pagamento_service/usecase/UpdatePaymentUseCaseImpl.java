@@ -19,7 +19,9 @@ public class UpdatePaymentUseCaseImpl implements UpdatePaymentUseCase {
 
     @Override
     public void execute(UpdatePaymentDTO request) {
-        if (Arrays.stream(PaymentStatus.values()).noneMatch(s -> s.name().equals(request.status()))) {
+        var paymentStatusAcceptableValues = Arrays.asList(PaymentStatus.values());
+
+        if (!paymentStatusAcceptableValues.contains(request.status())) {
             throw new IllegalArgumentException("Status de pagamento inválido: " + request.status());
         }
 
