@@ -29,9 +29,12 @@ class PagamentoControllerTest {
 
     @Test
     void testCreatePayment() {
-        CreditCardRequestDTO creditCardRequestDTO = new CreditCardRequestDTO("1234567890123456", "123", "Test Owner", "12/25");
-        CreatePaymentDTO createPaymentDTO = new CreatePaymentDTO("order123", new java.math.BigDecimal("100.00"), PaymentMethod.CARTAO, creditCardRequestDTO);
-        PaymentPublicResponseDTO paymentPublicResponseDTO = new PaymentPublicResponseDTO("pay123", PaymentStatus.PENDENTE);
+        CreditCardRequestDTO creditCardRequestDTO = new CreditCardRequestDTO("1234567890123456", "123", "Test Owner",
+                "12/25");
+        CreatePaymentDTO createPaymentDTO = new CreatePaymentDTO("order123", new java.math.BigDecimal("100.00"),
+                PaymentMethod.CARTAO, creditCardRequestDTO);
+        PaymentPublicResponseDTO paymentPublicResponseDTO = new PaymentPublicResponseDTO("pay123",
+                PaymentStatus.PENDENTE);
         when(paymentUseCase.createPayment(createPaymentDTO)).thenReturn(paymentPublicResponseDTO);
 
         ResponseEntity<PaymentPublicResponseDTO> response = pagamentoController.createPayment(createPaymentDTO);
@@ -43,20 +46,14 @@ class PagamentoControllerTest {
     @Test
     void testGetPaymentStatus() {
         String paymentId = "123";
-        PaymentWithStatusResponseDTO paymentWithStatusResponseDTO = new PaymentWithStatusResponseDTO(paymentId, PaymentStatus.APROVADO);
+        PaymentWithStatusResponseDTO paymentWithStatusResponseDTO = new PaymentWithStatusResponseDTO(paymentId,
+                PaymentStatus.APROVADO);
         when(paymentUseCase.getById(paymentId)).thenReturn(paymentWithStatusResponseDTO);
 
         ResponseEntity<PaymentWithStatusResponseDTO> response = pagamentoController.getPaymentStatus(paymentId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(paymentWithStatusResponseDTO, response.getBody());
-    }
-
-    @Test
-    void testHandleWebhook() {
-        WebhookRequestDTO webhookRequestDTO = new WebhookRequestDTO("order123", ExternalPaymentStatus.APROVADO);
-        ResponseEntity<Void> response = pagamentoController.handleWebhook(webhookRequestDTO);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test

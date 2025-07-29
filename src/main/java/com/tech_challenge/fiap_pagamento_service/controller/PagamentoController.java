@@ -15,7 +15,6 @@ import com.tech_challenge.fiap_pagamento_service.dto.CreatePaymentDTO;
 import com.tech_challenge.fiap_pagamento_service.dto.PaymentPublicResponseDTO;
 import com.tech_challenge.fiap_pagamento_service.dto.PaymentWithStatusResponseDTO;
 import com.tech_challenge.fiap_pagamento_service.dto.UpdatePaymentDTO;
-import com.tech_challenge.fiap_pagamento_service.dto.WebhookRequestDTO;
 import com.tech_challenge.fiap_pagamento_service.usecase.PaymentUseCase;
 
 @RestController
@@ -41,14 +40,9 @@ public class PagamentoController {
         return ResponseEntity.ok().body(payment);
     }
 
-    @PostMapping("/webhook")
-    public ResponseEntity<Void> handleWebhook(@RequestBody WebhookRequestDTO requestDTO) {
-        return ResponseEntity.ok().build();
-    }
-
     @PutMapping
     public ResponseEntity<Void> updatePagamento(@RequestBody UpdatePaymentDTO requestDTO) {
-
+        this.paymentMethod.updatePagamento(requestDTO);
         return ResponseEntity.noContent().build();
     }
 
